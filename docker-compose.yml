@@ -15,10 +15,23 @@ services:
     environment:
       - PMA_ARBITRARY=1
       - PMA_HOST=db
+      - PMA_USER=user
+      - PMA_PASSWORD=password
     restart: always
     ports:
       - "8280:80"
 
+  api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile.nodejs
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./api:/usr/src/app
+      - /usr/src/app/node_modules
+    depends_on:
+      - db
   db:
     build:
       context: ./mysql
